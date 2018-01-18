@@ -6,4 +6,7 @@ notifications:
 sudo: true
 
 before_install:
+     - chmod +x target/test-classes/cwebp/*
+
+before_install:
     - export TZ='Asia/Shanghai'
