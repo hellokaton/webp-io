@@ -3,10 +3,7 @@ language: java
 notifications:
   email: false
 
-sudo: true
-
-before_install:
-     - chmod +x target/test-classes/cwebp/*
+sudo: false
 
 before_install:
     - export TZ='Asia/Shanghai'

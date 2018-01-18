@@ -1,7 +1,5 @@
 package io.github.biezhi.webp;
 
-import org.junit.Test;
-
 import java.io.File;
 
 /**
@@ -10,8 +8,8 @@ import java.io.File;
  */
 public class WebpIOTest {
 
-    @Test
-    public void testConvert() throws Exception {
+//    @Test
+    public void testConvert() {
         File src = new File(WebpIOTest.class.getResource("/heng.webp").getPath());
 //        System.out.println(src);
         File dest = new File("heng.png");
