@@ -3,7 +3,7 @@ language: java
 notifications:
   email: false
 
-sudo: false
+sudo: true
 
 before_install:
     - export TZ='Asia/Shanghai'
