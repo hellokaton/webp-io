@@ -21,8 +21,7 @@ public class WebpIO {
     private static final String CWEBP_TMP_DIR = "cwebp_tmp";
 
     static {
-        String devMode = System.getProperty("webp-io.devMode", "false");
-
+        String devMode  = System.getProperty("webp-io.devMode", "false");
         String webpPath = "cwebp/" + getOsName();
 
         if ("true".equals(devMode)) {
@@ -66,10 +65,10 @@ public class WebpIO {
      * @param dest normal image path
      */
     public static void toNormalImage(File src, File dest) {
-        String command = CMD_DIR + "/dwebp " + src.getPath() + " -o " + dest.getPath();
+        String command = CMD_DIR + (dest.getName().endsWith(".gif") ? "/gif2webp" : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
         System.out.println("Execute: " + command);
         String output = executeCommand(command);
-        if (null != output && !"".equals(output)) {
+        if (!"".equals(output)) {
             System.out.println("Output: " + output);
         }
     }
@@ -92,10 +91,10 @@ public class WebpIO {
      */
     public static void toWEBP(File src, File dest) {
         try {
-            String command = CMD_DIR + "/dwebp " + src.getPath() + " -o " + dest.getPath();
+            String command = CMD_DIR + (src.getName().endsWith(".gif") ? "/gif2webp " : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
             System.out.println("Execute: " + command);
             String output = executeCommand(command);
-            if (null != output && !"".equals(output)) {
+            if (!"".equals(output)) {
                 System.out.println("Output: " + output);
             }
         } catch (Exception e) {
@@ -116,9 +115,9 @@ public class WebpIO {
             p = Runtime.getRuntime().exec(command);
             p.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String         line   = "";
+            String         line;
             while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
+                output.append(line).append("\n");
             }
         } catch (Exception e) {
             throw new WebpIOException(e);

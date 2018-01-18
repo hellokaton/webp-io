@@ -17,7 +17,7 @@ public class WebpIOTest {
         File dest = new File("heng.png");
 
         WebpIO.toNormalImage(src, dest);
-
+        WebpIO.close();
     }
 
     public static void main(String[] args) {
