@@ -16,13 +16,15 @@ public class WebpIO {
      * binary command file path
      */
     private static final String CMD_DIR;
-    private static       String OS_NAME       = System.getProperty("os.name").toLowerCase();
-    private static       String OS_ARCH       = System.getProperty("os.arch").toLowerCase();
+    private static String OS_NAME = System.getProperty("os.name").toLowerCase();
+    private static String OS_ARCH = System.getProperty("os.arch").toLowerCase();
     private static final String CWEBP_TMP_DIR = "cwebp_tmp";
 
     static {
-        String devMode  = System.getProperty("webp-io.devMode", "false");
-        String webpPath = "cwebp/" + getOsName();
+        String devMode = System.getProperty("webp-io.devMode", "false");
+        String osName = getOsName();
+        String extension = getExtensionByOs(osName);
+        String webpPath = "cwebp/" + osName;
 
         if ("true".equals(devMode)) {
             CMD_DIR = WebpIO.class.getResource("/").getPath() + webpPath;
@@ -33,15 +35,15 @@ public class WebpIO {
                 tmp.mkdirs();
             }
 
-            InputStream dwebp    = WebpIO.class.getResourceAsStream("/" + webpPath + "/dwebp");
-            InputStream cwebp    = WebpIO.class.getResourceAsStream("/" + webpPath + "/cwebp");
-            InputStream gif2webp = WebpIO.class.getResourceAsStream("/" + webpPath + "/gif2webp");
+            InputStream dwebp = WebpIO.class.getResourceAsStream("/" + webpPath + "/dwebp" + extension);
+            InputStream cwebp = WebpIO.class.getResourceAsStream("/" + webpPath + "/cwebp" + extension);
+            InputStream gif2webp = WebpIO.class.getResourceAsStream("/" + webpPath + "/gif2webp" + extension);
 
             CMD_DIR = tmp.getPath();
             try {
-                copy(dwebp, new File(tmp.getPath() + "/dwebp"));
-                copy(cwebp, new File(tmp.getPath() + "/cwebp"));
-                copy(gif2webp, new File(tmp.getPath() + "/gif2webp"));
+                copy(dwebp, new File(tmp.getPath() + "/dwebp" + extension));
+                copy(cwebp, new File(tmp.getPath() + "/cwebp" + extension));
+                copy(gif2webp, new File(tmp.getPath() + "/gif2webp" + extension));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -91,6 +93,8 @@ public class WebpIO {
      */
     public static void toWEBP(File src, File dest) {
         try {
+            if (dest.exists()) dest.delete();
+            boolean create = dest.createNewFile();
             String command = CMD_DIR + (src.getName().endsWith(".gif") ? "/gif2webp " : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
             System.out.println("Execute: " + command);
             String output = executeCommand(command);
@@ -110,12 +114,12 @@ public class WebpIO {
      */
     private static String executeCommand(String command) {
         StringBuilder output = new StringBuilder();
-        Process       p;
+        Process p;
         try {
             p = Runtime.getRuntime().exec(command);
             p.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String         line;
+            String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
@@ -140,9 +144,9 @@ public class WebpIO {
     }
 
     private static void copy(InputStream in, File dest) throws IOException {
-        OutputStream out    = new FileOutputStream(dest);
-        byte[]       buffer = new byte[1024];
-        int          length;
+        OutputStream out = new FileOutputStream(dest);
+        byte[] buffer = new byte[1024];
+        int length;
         //copy the file content in bytes
         while ((length = in.read(buffer)) > 0) {
             out.write(buffer, 0, length);
@@ -173,4 +177,14 @@ public class WebpIO {
         }
     }
 
+    /**
+     * Return the Os specific extension
+     *@param os: operating system name
+     */
+
+    private static String getExtensionByOs(String os) {
+        if (os == null || os.isEmpty()) return "";
+        else if (os.contains("win")) return ".exe";
+        return "";
+    }
 }

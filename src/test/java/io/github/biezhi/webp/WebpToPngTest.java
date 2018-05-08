@@ -1,16 +1,18 @@
 package io.github.biezhi.webp;
 
+import org.junit.Test;
+
 import java.io.File;
 
 /**
  * @author biezhi
  * @date 2017/10/2
  */
-public class WebpIOTest {
+public class WebpToPngTest {
 
-//    @Test
+    @Test
     public void testConvert() {
-        File src = new File(WebpIOTest.class.getResource("/heng.webp").getPath());
+        File src = new File(WebpToPngTest.class.getResource("/heng.webp").getPath());
 //        System.out.println(src);
         File dest = new File("heng.png");
 
