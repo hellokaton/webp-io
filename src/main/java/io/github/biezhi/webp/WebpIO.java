@@ -93,9 +93,7 @@ public class WebpIO {
      */
     public static void toWEBP(File src, File dest) {
         try {
-            if (dest.exists()) dest.delete();
-            boolean create = dest.createNewFile();
-            String command = CMD_DIR + (src.getName().endsWith(".gif") ? "/gif2webp " : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
+            String command = CMD_DIR + (src.getName().endsWith(".gif") ? "/gif2webp " : "/cwebp ") + src.getPath() + " -o " + dest.getPath();
             System.out.println("Execute: " + command);
             String output = executeCommand(command);
             if (!"".equals(output)) {
