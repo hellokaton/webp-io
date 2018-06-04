@@ -15,7 +15,7 @@ the **webp-io** is convert normal image and `webp` file.
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>webp-io</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 

@@ -6,7 +6,7 @@
 
     <groupId>io.github.biezhi</groupId>
     <artifactId>webp-io</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>webp-io</name>
     <url>https://github.com/biezhi/webp-io</url>
     <description>Webp convert png, jpg</description>
