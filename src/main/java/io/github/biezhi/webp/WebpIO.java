@@ -169,7 +169,7 @@ public class WebpIO {
             return "mac_" + OS_ARCH;
         } else if (OS_NAME.indexOf("nix") >= 0 || OS_NAME.indexOf("nux") >= 0 || OS_NAME.indexOf("aix") > 0) {
             // unix
-            return "linux_" + OS_ARCH;
+            return "amd64".equalsIgnoreCase(OS_ARCH) ? "linux_x86_64" : "linux_" + OS_ARCH;
         } else {
             throw new WebpIOException("Hi boy, Your OS is not support!!");
         }
