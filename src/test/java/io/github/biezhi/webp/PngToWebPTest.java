@@ -3,27 +3,26 @@ package io.github.biezhi.webp;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
+
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author jozsimezei
  * @date 2018/05/08
  */
-public class PngToWebPTest {
+public class PngToWebPTest extends BaseTest {
 
     @Test
-    public void testConvertToWebp() throws IOException {
-        File src = new File(PngToWebPTest.class.getResource("/polycode.png").getPath());
-//        System.out.println(src);
+    public void testConvertToWebp() {
+        File src = new File(classPath() + "/polycode.png");
         File dest = new File("polycode.webp");
 
-        WebpIO.toWEBP(src, dest);
-        WebpIO.close();
+        WebpIO.create().toWEBP(src, dest);
+
+        assertNotNull(dest);
+        assertTrue(dest.exists());
+        deleteTempFile("polycode.webp");
     }
 
-    public static void main(String[] args) {
-        String osName = System.getProperty("os.name");
-        String osArch = System.getProperty("os.arch");
-        System.out.println(osName.replace(" ", "") + "_" + osArch);
-    }
 }

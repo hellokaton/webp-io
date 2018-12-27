@@ -1,6 +1,7 @@
 package io.github.biezhi.webp;
 
 import java.io.*;
+import java.util.Objects;
 
 /**
  * Webp converter
@@ -15,39 +16,55 @@ public class WebpIO {
      * <p>
      * binary command file path
      */
-    private static final String CMD_DIR;
-    private static String OS_NAME = System.getProperty("os.name").toLowerCase();
-    private static String OS_ARCH = System.getProperty("os.arch").toLowerCase();
-    private static final String CWEBP_TMP_DIR = "cwebp_tmp";
+    private static final String OS_NAME  = System.getProperty("os.name").toLowerCase();
+    private static final String OS_ARCH  = System.getProperty("os.arch").toLowerCase();
+    private static final String DEV_MODE = System.getProperty("webp-io.devMode", "false");
 
-    static {
-        String devMode = System.getProperty("webp-io.devMode", "false");
-        String osName = getOsName();
-        String extension = getExtensionByOs(osName);
+    private String commandDir;
+    private String webpTmpDir = "cwebp_tmp";
+
+    public WebpIO() {
+        this.init();
+    }
+
+    private void init() {
+        String osName   = getOsName();
         String webpPath = "cwebp/" + osName;
 
-        if ("true".equals(devMode)) {
-            CMD_DIR = WebpIO.class.getResource("/").getPath() + webpPath;
-        } else {
-            // copy to tmp dir
-            File tmp = new File(CWEBP_TMP_DIR);
-            if (!tmp.exists()) {
-                tmp.mkdirs();
-            }
-
-            InputStream dwebp = WebpIO.class.getResourceAsStream("/" + webpPath + "/dwebp" + extension);
-            InputStream cwebp = WebpIO.class.getResourceAsStream("/" + webpPath + "/cwebp" + extension);
-            InputStream gif2webp = WebpIO.class.getResourceAsStream("/" + webpPath + "/gif2webp" + extension);
-
-            CMD_DIR = tmp.getPath();
-            try {
-                copy(dwebp, new File(tmp.getPath() + "/dwebp" + extension));
-                copy(cwebp, new File(tmp.getPath() + "/cwebp" + extension));
-                copy(gif2webp, new File(tmp.getPath() + "/gif2webp" + extension));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (Boolean.TRUE.toString().equals(DEV_MODE.toUpperCase())) {
+            this.commandDir = WebpIO.class.getResource("/").getPath() + webpPath;
+            return;
         }
+
+        // copy to tmp dir
+        File tmp = new File(webpTmpDir);
+        if (!tmp.exists()) {
+            tmp.mkdirs();
+        }
+
+        this.commandDir = tmp.getPath();
+
+        String extension = getExtensionByOs(osName);
+
+        InputStream dwebp    = getInputStream("/" + webpPath + "/dwebp" + extension);
+        InputStream cwebp    = getInputStream("/" + webpPath + "/cwebp" + extension);
+        InputStream gif2webp = getInputStream("/" + webpPath + "/gif2webp" + extension);
+
+        try {
+            copy(dwebp, new File(tmp.getPath() + "/dwebp" + extension));
+            copy(cwebp, new File(tmp.getPath() + "/cwebp" + extension));
+            copy(gif2webp, new File(tmp.getPath() + "/gif2webp" + extension));
+        } catch (Exception e) {
+            throw new WebpIOException(e);
+        }
+    }
+
+    public static WebpIO create() {
+        return new WebpIO();
+    }
+
+    private InputStream getInputStream(String subPath) {
+        return WebpIO.class.getResourceAsStream(subPath);
     }
 
     /**
@@ -56,7 +73,7 @@ public class WebpIO {
      * @param src  webp file path
      * @param dest normal image path
      */
-    public static void toNormalImage(String src, String dest) {
+    public void toNormalImage(String src, String dest) {
         toNormalImage(new File(src), new File(dest));
     }
 
@@ -66,13 +83,9 @@ public class WebpIO {
      * @param src  webp file path
      * @param dest normal image path
      */
-    public static void toNormalImage(File src, File dest) {
-        String command = CMD_DIR + (dest.getName().endsWith(".gif") ? "/gif2webp" : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
-        System.out.println("Execute: " + command);
-        String output = executeCommand(command);
-        if (!"".equals(output)) {
-            System.out.println("Output: " + output);
-        }
+    public void toNormalImage(File src, File dest) {
+        String command = commandDir + (dest.getName().endsWith(".gif") ? "/gif2webp" : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
+        this.executeCommand(command);
     }
 
     /**
@@ -81,7 +94,7 @@ public class WebpIO {
      * @param src  nomal image path
      * @param dest webp file path
      */
-    public static void toWEBP(String src, String dest) {
+    public void toWEBP(String src, String dest) {
         toWEBP(new File(src), new File(dest));
     }
 
@@ -91,14 +104,10 @@ public class WebpIO {
      * @param src  nomal image path
      * @param dest webp file path
      */
-    public static void toWEBP(File src, File dest) {
+    public void toWEBP(File src, File dest) {
         try {
-            String command = CMD_DIR + (src.getName().endsWith(".gif") ? "/gif2webp " : "/cwebp ") + src.getPath() + " -o " + dest.getPath();
-            System.out.println("Execute: " + command);
-            String output = executeCommand(command);
-            if (!"".equals(output)) {
-                System.out.println("Output: " + output);
-            }
+            String command = commandDir + (src.getName().endsWith(".gif") ? "/gif2webp " : "/cwebp ") + src.getPath() + " -o " + dest.getPath();
+            this.executeCommand(command);
         } catch (Exception e) {
             throw new WebpIOException(e);
         }
@@ -110,41 +119,46 @@ public class WebpIO {
      * @param command command direct
      * @return
      */
-    private static String executeCommand(String command) {
+    private String executeCommand(String command) {
+        System.out.println("Execute: " + command);
+
         StringBuilder output = new StringBuilder();
-        Process p;
+        Process       p;
         try {
             p = Runtime.getRuntime().exec(command);
             p.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
+            String         line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
         } catch (Exception e) {
             throw new WebpIOException(e);
         }
-        return output.toString();
+        if (!"".equals(output.toString())) {
+            System.out.println("Output: " + output);
+        }
+        return "";
     }
 
     /**
      * delete temp dir and commands
      */
-    public static void close() {
-        File tmp = new File(CWEBP_TMP_DIR);
+    public void close() {
+        File tmp = new File(webpTmpDir);
         if (tmp.exists() && tmp.isDirectory()) {
             File[] files = tmp.listFiles();
-            for (File file : files) {
+            for (File file : Objects.requireNonNull(files)) {
                 file.delete();
             }
             tmp.delete();
         }
     }
 
-    private static void copy(InputStream in, File dest) throws IOException {
-        OutputStream out = new FileOutputStream(dest);
-        byte[] buffer = new byte[1024];
-        int length;
+    private void copy(InputStream in, File dest) throws IOException {
+        OutputStream out    = new FileOutputStream(dest);
+        byte[]       buffer = new byte[1024];
+        int          length;
         //copy the file content in bytes
         while ((length = in.read(buffer)) > 0) {
             out.write(buffer, 0, length);
@@ -159,15 +173,15 @@ public class WebpIO {
      *
      * @return
      */
-    private static String getOsName() {
+    private String getOsName() {
         // windows
-        if (OS_NAME.indexOf("win") >= 0) {
+        if (OS_NAME.contains("win")) {
             boolean is64bit = (System.getenv("ProgramFiles(x86)") != null);
             return "windows_" + (is64bit ? "x86_64" : "x86");
-        } else if (OS_NAME.indexOf("mac") >= 0) {
+        } else if (OS_NAME.contains("mac")) {
             // mac osx
             return "mac_" + OS_ARCH;
-        } else if (OS_NAME.indexOf("nix") >= 0 || OS_NAME.indexOf("nux") >= 0 || OS_NAME.indexOf("aix") > 0) {
+        } else if (OS_NAME.contains("nix") || OS_NAME.contains("nux") || OS_NAME.indexOf("aix") > 0) {
             // unix
             return "amd64".equalsIgnoreCase(OS_ARCH) ? "linux_x86_64" : "linux_" + OS_ARCH;
         } else {
@@ -177,12 +191,13 @@ public class WebpIO {
 
     /**
      * Return the Os specific extension
-     *@param os: operating system name
+     *
+     * @param os: operating system name
      */
-
-    private static String getExtensionByOs(String os) {
+    private String getExtensionByOs(String os) {
         if (os == null || os.isEmpty()) return "";
         else if (os.contains("win")) return ".exe";
         return "";
     }
+
 }
