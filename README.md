@@ -1,6 +1,6 @@
 # webp-io
 
-the **webp-io** is convert normal image and `webp` file.
+The **webp-io** is convert normal image and `webp` file.
 
 [![](https://img.shields.io/travis/biezhi/webp-io.svg)](https://travis-ci.org/biezhi/webp-io)
 [![](https://img.shields.io/badge/license-Apache2-FF0080.svg)](https://github.com/biezhi/webp-io/blob/master/LICENSE)
@@ -23,6 +23,8 @@ the **webp-io** is convert normal image and `webp` file.
 String src  = "a.webp";
 String dest = "a.png";
 WebpIO.create().toNormalImage(src, dest);
+
+WebpIO.create().toWEBP("hello.png", "hello.webp");
 ```
 
 Okay, lets go.

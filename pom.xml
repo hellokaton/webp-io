@@ -6,7 +6,7 @@
 
     <groupId>io.github.biezhi</groupId>
     <artifactId>webp-io</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <name>webp-io</name>
     <url>https://github.com/biezhi/webp-io</url>
     <description>Webp convert png, jpg</description>
@@ -17,30 +17,19 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+
     <developers>
         <developer>
             <name>biezhi</name>
             <email>biezhi.me@gmail.com</email>
         </developer>
     </developers>
+
     <scm>
         <connection>scm:git@github.com:biezhi/webp-io.git</connection>
         <developerConnection>scm:git@github.com:biezhi/webp-io.git</developerConnection>
         <url>git@github.com:biezhi/webp-io.git</url>
     </scm>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>7</source>
-                    <target>7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
         <dependency>
@@ -50,6 +39,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <profiles>
         <profile>
