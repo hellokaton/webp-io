@@ -84,8 +84,8 @@ public class WebpIO {
      * @param dest normal image path
      */
     public void toNormalImage(File src, File dest) {
-        String command = commandDir + (dest.getName().endsWith(".gif") ? "/gif2webp" : "/dwebp ") + src.getPath() + " -o " + dest.getPath();
-        this.executeCommand(command);
+        ProcessBuilder pb = new ProcessBuilder(commandDir + (dest.getName().endsWith(".gif") ? "/gif2webp " : "/dwebp"), src.getPath(), "-o", dest.getPath());
+        this.executeCommand(pb);
     }
 
     /**
@@ -106,8 +106,8 @@ public class WebpIO {
      */
     public void toWEBP(File src, File dest) {
         try {
-            String command = commandDir + (src.getName().endsWith(".gif") ? "/gif2webp " : "/cwebp ") + src.getPath() + " -o " + dest.getPath();
-            this.executeCommand(command);
+            ProcessBuilder pb = new ProcessBuilder(commandDir + (src.getName().endsWith(".gif") ? "/gif2webp " : "/cwebp"), src.getPath(), "-o", dest.getPath());
+            this.executeCommand(pb);
         } catch (Exception e) {
             throw new WebpIOException(e);
         }
@@ -116,16 +116,15 @@ public class WebpIO {
     /**
      * execute command
      *
-     * @param command command direct
+     * @param processBuilder command direct
      * @return
      */
-    private String executeCommand(String command) {
-        System.out.println("Execute: " + command);
+    private String executeCommand(ProcessBuilder processBuilder) {
+        System.out.println("Execute: " + processBuilder.command());
 
         StringBuilder output = new StringBuilder();
-        Process       p;
         try {
-            p = Runtime.getRuntime().exec(command);
+            Process p = processBuilder.start();
             p.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String         line;
