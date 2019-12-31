@@ -24,7 +24,6 @@ public class WebpIO {
     private String webpTmpDir = "cwebp_tmp";
 
     public WebpIO() {
-        webpTmpDir = "cwebp_tmp";
     }
     
     public WebpIO(String path) {
