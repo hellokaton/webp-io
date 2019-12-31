@@ -18,7 +18,7 @@ public class WebpToPngTest extends BaseTest {
         File src  = new File(classPath() + "/heng.webp");
         File dest = new File("heng.png");
 
-        WebpIO.create().toNormalImage(src, dest);
+        WebpIO.create(classPath()).toNormalImage(src, dest);
 
         assertNotNull(dest);
         assertTrue(dest.exists());

@@ -18,7 +18,7 @@ public class PngToWebPTest extends BaseTest {
         File src = new File(classPath() + "/polycode.png");
         File dest = new File("polycode.webp");
 
-        WebpIO.create().toWEBP(src, dest);
+        WebpIO.create(classPath()).toWEBP(src, dest);
 
         assertNotNull(dest);
         assertTrue(dest.exists());

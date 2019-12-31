@@ -24,10 +24,15 @@ public class WebpIO {
     private String webpTmpDir = "cwebp_tmp";
 
     public WebpIO() {
-        this.init();
+        webpTmpDir = "cwebp_tmp";
+    }
+    
+    public WebpIO(String path) {
+        webpTmpDir = path + File.separator + "cwebp_tmp";
+        init(webpTmpDir);
     }
 
-    private void init() {
+    private void init(String path) {
         String osName   = getOsName();
         String webpPath = "cwebp/" + osName;
 
@@ -59,8 +64,8 @@ public class WebpIO {
         }
     }
 
-    public static WebpIO create() {
-        return new WebpIO();
+    public static WebpIO create(String path) {
+        return new WebpIO(path);
     }
 
     private InputStream getInputStream(String subPath) {
