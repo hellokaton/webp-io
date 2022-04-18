@@ -2,7 +2,7 @@
 
 The **webp-io** is convert normal image and `webp` file.
 
-[![](https://img.shields.io/travis/biezhi/webp-io.svg)](https://travis-ci.org/biezhi/webp-io)
+[![](https://img.shields.io/travis/hellokaton/webp-io.svg)](https://travis-ci.org/hellokaton/webp-io)
 [![](https://img.shields.io/badge/license-Apache2-FF0080.svg)](https://github.com/biezhi/webp-io/blob/master/LICENSE)
 
 ## Usage
@@ -13,7 +13,7 @@ The **webp-io** is convert normal image and `webp` file.
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>webp-io</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 </dependency>
 ```
 

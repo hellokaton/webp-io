@@ -6,7 +6,7 @@
 
     <groupId>io.github.biezhi</groupId>
     <artifactId>webp-io</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>webp-io</name>
     <url>https://github.com/biezhi/webp-io</url>
     <description>Webp convert png, jpg</description>
@@ -20,15 +20,15 @@
 
     <developers>
         <developer>
-            <name>biezhi</name>
-            <email>biezhi.me@gmail.com</email>
+            <name>hellokaton</name>
+            <email>hellokaton@gmail.com</email>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git@github.com:biezhi/webp-io.git</connection>
-        <developerConnection>scm:git@github.com:biezhi/webp-io.git</developerConnection>
-        <url>git@github.com:biezhi/webp-io.git</url>
+        <connection>scm:git@github.com:hellokaton/webp-io.git</connection>
+        <developerConnection>scm:git@github.com:hellokaton/webp-io.git</developerConnection>
+        <url>git@github.com:hellokaton/webp-io.git</url>
     </scm>
 
     <dependencies>
