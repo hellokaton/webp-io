@@ -1,4 +1,4 @@
-package io.github.biezhi.webp;
+package com.hellokaton.webp;
 
 import java.io.*;
 import java.util.Objects;

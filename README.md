@@ -11,7 +11,7 @@ The **webp-io** is convert normal image and `webp` file.
 
 ```xml
 <dependency>
-    <groupId>io.github.biezhi</groupId>
+    <groupId>com.hellokaton</groupId>
     <artifactId>webp-io</artifactId>
     <version>0.0.6</version>
 </dependency>

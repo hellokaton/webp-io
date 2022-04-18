@@ -1,4 +1,4 @@
-package io.github.biezhi.webp;
+package com.hellokaton.webp;
 
 import org.junit.Test;
 

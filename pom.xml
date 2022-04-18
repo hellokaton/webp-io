@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.biezhi</groupId>
+    <groupId>com.hellokaton</groupId>
     <artifactId>webp-io</artifactId>
     <version>0.0.6</version>
     <name>webp-io</name>
-    <url>https://github.com/biezhi/webp-io</url>
+    <url>https://github.com/hellokaton/webp-io</url>
     <description>Webp convert png, jpg</description>
 
     <licenses>
